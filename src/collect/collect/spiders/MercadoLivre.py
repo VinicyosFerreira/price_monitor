@@ -17,7 +17,7 @@ class MercadolivreSpider(scrapy.Spider):
                 "name": product.css("a.poly-component__title::text").get(),
                 "oldPrice": product.css("s.andes-money-amount--previous span.andes-money-amount__fraction::text").get(),
                 "currentPrice": product.css("div.poly-price__current span.andes-money-amount__fraction::text").get(),
-                "rating": product.css("span.andes-visually-hidden::text").get(),
+                "rating": product.css("span.poly-component__review-compacted span.poly-phrase-label::text").get(),
             }
 
        

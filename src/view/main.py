@@ -2,18 +2,22 @@ import streamlit as st
 import pandas as pd
 import os
 import plotly.express as px
+from pathlib import Path
 
 class View: 
 
+    def __init__(self):
+        self.__target_path = str(Path(__file__).resolve().parent.parent.parent.joinpath("data", "products.csv"))
+
     def execute(self):
+        
         st.title("Monitoramento de preço de notebooks")
 
-        # verificar se o arquivo existe
-        if(not os.path.exists('/home/vinicyos/python_projetos/monitoramento_preco/data/products.csv')):
+        if(not os.path.exists(self.__target_path)):
             st.write("Clique no botão para iniciar a coleta de dados")
             st.stop()
 
-        df = pd.read_csv('/home/vinicyos/python_projetos/monitoramento_preco/data/products.csv')
+        df = pd.read_csv(self.__target_path)
 
         st.subheader("KPIs")
 
