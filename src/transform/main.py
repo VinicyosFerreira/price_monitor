@@ -8,7 +8,7 @@ class Transform:
      # read data json file
     def __init__(self):
         self.__target_path = str(Path(__file__).resolve().parent.parent.parent.joinpath("data", "products.csv"))
-        self.__df = pd.read_json(Path(__file__).resolve().parent.parent.parent.joinpath("data", "products.jsonl"), lines=True)
+        self.__df = pd.read_json(Path(__file__).resolve().parent.parent.parent.joinpath("fixtures", "products.jsonl"), lines=True)
     
     def execute(self):
         # transformations here, astype to convert data types
