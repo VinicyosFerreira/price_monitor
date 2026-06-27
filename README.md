@@ -1,11 +1,11 @@
 # 📈 Monitoramento de Preços RPA & Analytics
 
-Este projeto é uma solução robusta de RPA (Robotic Process Automation) para monitoramento e análise de preços, automatizando em 100% o processo manual. Através de uma pipeline ETL (Extract, Transform, Load), a ferramenta viabiliza inteligência de mercado em tempo real com uma interface visual intuitiva.
+Este projeto é uma solução de RPA (Robotic Process Automation) para processamento e análise de preços. Através de uma pipeline ETL (Extract, Transform, Load).
 
 ## 🚀 Tecnologias
 **Python**: Linguagem core para execução da lógica e automação.
 
-**Scrapy**: Framework de alto desempenho para extração de dados via Web Scraping.
+**Scrapy**: Framework preservado como integração experimental de Web Scraping.
 
 **Pandas**: Biblioteca poderosa para limpeza, manipulação e estruturação de dados.
 
@@ -27,9 +27,11 @@ Este projeto é uma solução robusta de RPA (Robotic Process Automation) para m
 
 ## 📁 Estrutura do Projeto
 ```
-data/             # Arquivos JSONL e CSV (Persistência local)
+fixtures/         # Dataset
+data/             # CSV processado e gerado localmente
 src/
-├── collect/      # Spiders do Scrapy para extração de dados
+├── collect/      # Spider preservada como integração experimental
+├── jobs/         # Agendamento diário, logs e retries
 ├── transform/    # Lógica de ETL e limpeza com Pandas
 ├── view/         # Interface e Dashboard com Streamlit
 └── static/       # Ativos estáticos
@@ -37,7 +39,7 @@ src/
 
 ## 🗺️ Fluxo de Valor (ETL)
 
-🤖 **Coleta de Dados**: Implementação de spiders otimizadas com Scrapy que colaboram para uma extração de alto volume via requisições assíncronas, capturando milhares de registros em cerca de 15 segundos.
+🤖 **Extração de Dados**: Leitura de 500 produtos diretamente de `fixtures/products.jsonl`. O dataset contém preços, lojas, avaliações e inconsistências controladas para exercitar o tratamento de dados.
 
 🧹 **Transformação de Dados**: Camada responsável por redesenhar os dados brutos. Utiliza DataFrames para limpeza de valores nulos, tratamento de duplicatas e formatação monetária.
 
@@ -56,21 +58,17 @@ Clone este repositório para o seu computador.
 
 Instale as dependências do projeto.
 
-`pip install -r requirements.txt`
+`python -m pip install -r requirements.txt`
 
-Coleta de dados via scrapy na pasta (src/collect).Será gerado a pasta data com arquivo JSON.
+Execute o dashboard na raiz do projeto:
 
-`scrapy crawl MercadoLivre -o ../../data/products.jsonl`
+`streamlit run app.py`
 
-Limpeza e transformação de dados na pasta(src/transform).Será gerado na pasta data um csv com dados.
+Na primeira execução, o aplicativo executa o ETL diretamente sobre a fixture JSONL. Nas execuções seguintes, ele apenas carrega o CSV já processado.
 
-`python main.py`
-
-Execução do dashboard na pasta (src/view)
-
-`streamlit run main.py`
+Para manter a carga diária agendada às 08:00, execute em outro terminal:
+`python -m src.jobs.scheduler`
 
 ## 🔗 Links 
 **Código Fonte**
-
 https://github.com/VinicyosFerreira/price_monitor
