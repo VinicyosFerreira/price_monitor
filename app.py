@@ -1,5 +1,6 @@
 from pathlib import Path
 import streamlit as st
+from src.extract.main import Extractor
 from src.transform.main import Transform
 from src.view.main import View
 
@@ -10,7 +11,8 @@ def prepare_initial_data():
     if not PRODUCTS_CSV.exists():
         try:
             with st.spinner("Preparando os dados iniciais..."):
-                Transform().execute()
+                products_path = Extractor().execute()
+                Transform(source_path=products_path).execute()
         except FileNotFoundError as error:
             st.error(f"Arquivo de produtos não foi encontrado: {error}")
         except Exception as error:

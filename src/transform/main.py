@@ -6,11 +6,13 @@ from pathlib import Path
 
 class Transform: 
      # read data json file
-    def __init__(self):
+    def __init__(self, source_path=None):
         self.__target_path = str(Path(__file__).resolve().parent.parent.parent.joinpath("data", "products.csv"))
-        self.__df = pd.read_json(Path(__file__).resolve().parent.parent.parent.joinpath("fixtures", "products.jsonl"), lines=True)
+        self.__source_path = source_path or Path(__file__).resolve().parents[2].joinpath("data", "products.jsonl")
+        self.__df = pd.read_json(self.__source_path, lines=True)
     
     def execute(self):
+        Path(self.__target_path).parent.mkdir(parents=True, exist_ok=True)
         # transformations here, astype to convert data types
         self.__df['currentPrice'] = self.__df['currentPrice'].astype(float)
         self.__df['oldPrice'] = self.__df['oldPrice'].astype(float)

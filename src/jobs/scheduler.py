@@ -8,6 +8,7 @@ from pathlib import Path
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
+from src.extract.main import Extractor
 from src.transform.main import Transform
 
 
@@ -35,9 +36,11 @@ def configure_logging() -> None:
 
 
 def run_pipeline() -> None:
-    """Executa a transformação sobre a fixture JSONL."""
-    logging.info("Iniciando transformação da fixture de produtos.")
-    Transform().execute()
+    """Gera a fotografia dinâmica e executa sua transformação."""
+    logging.info("Gerando nova fotografia de preços a partir da fixture.")
+    products_path = Extractor().execute()
+    logging.info("Iniciando transformação dos produtos gerados.")
+    Transform(source_path=products_path).execute()
     logging.info("Pipeline diária concluída com sucesso.")
 
 
